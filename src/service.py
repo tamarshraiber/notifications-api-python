@@ -30,8 +30,29 @@ class NotificationService:
         n = find_by_id(nid)
         if not n:
             return None
+        allowed_fields = ["message", "target_channels"]
+
+        new_message = n.message
+        new_channels = n.target_channels
+
         for k, v in data.items():
-            setattr(n, k, v)
+            if k not in allowed_fields:
+                continue
+            if k == "message":
+                if not v or not v.strip():
+                    raise ValueError("message cannot be empty")
+                new_message = v
+            if k == "target_channels":
+                self._validate_notification(v, new_message)
+                new_channels = normalize_channels(v)    
+
+        n.target_channels = new_channels
+        n.message = new_message
+
+        if has_sms(n.target_channels):
+            n.sms_segments = min_sms_segments(new_message)
+        else:
+            n.sms_segments = 0
         return n
 
     def send_one(self, nid):
