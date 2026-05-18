@@ -34,6 +34,7 @@ class NotificationProcessor:
                 all_success = False
                 n.last_error = f"Unknown channel: {channel_type}"
                 continue
+            print(channel_type, response)
         
             last_response_message = response.get("Message")
             if not response.get("Success"):

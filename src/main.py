@@ -3,6 +3,8 @@ from processor import NotificationProcessor
 from seed import seed
 from repository import add_notification, get_all, find_by_id
 from service import NotificationService
+import logging
+logging.basicConfig(level=logging.INFO)
 
 app = Flask(__name__)
 
@@ -52,6 +54,22 @@ def send_one_route(nid):
 def send_bulk():
     notifications = service.send_all()
     return jsonify([n.to_dict() for n in notifications])
+
+
+@app.errorhandler(ValueError)
+def handle_value_error(e):
+    return jsonify({"error": str(e)}), 400
+
+
+@app.errorhandler(404)
+def handle_404(e):
+    return jsonify({"error": "not found"}), 404
+
+
+@app.errorhandler(Exception)
+def handle_exception(e):
+    app.logger.exception("Unhandled exception")
+    return jsonify({"error": "internal server error"}), 500
 
 
 if __name__ == "__main__":
