@@ -18,6 +18,7 @@ class NotificationProcessor:
             n.last_error = "No target channels"
             return
         last_response_message = None
+        all_success = True
 
         for target in n.target_channels:
             channel_type = target.get("type")
@@ -30,14 +31,20 @@ class NotificationProcessor:
             elif channel_type == "push":
                 response = send_push({"recipient": recipient, "message": n.message})
             else:
-                n.status = FAILED
+                all_success = False
                 n.last_error = f"Unknown channel: {channel_type}"
-                return
+                continue
         
             last_response_message = response.get("Message")
+            if not response.get("Success"):
+                all_success = False
 
-        n.status = SENT
-        n.last_error = last_response_message
+        if all_success:
+            n.status = SENT
+            n.last_error = last_response_message
+        else:     
+            n.status = FAILED
+        
 
 
 def mark_sent(n, error="[email] accepted for delivery"):
