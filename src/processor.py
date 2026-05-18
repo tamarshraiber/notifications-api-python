@@ -34,11 +34,6 @@ class NotificationProcessor:
         n.status = SENT
         n.last_error = response["Message"]
 
-    def send_all(self):
-        pending = [n for n in get_all() if n.status == PENDING]
-        for n in pending:
-            self.send_one(n)
-
 
 def mark_sent(n, error="[email] accepted for delivery"):
     n.status = SENT
