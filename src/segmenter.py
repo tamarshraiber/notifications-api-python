@@ -48,26 +48,3 @@ def has_sms(channels):
     return any(c.get("type") == "sms" for c in channels)
 
 
-
-
-"""
-def mark_sent(n, error="[email] accepted for delivery"):
-    n.status = SENT
-    n.attempts = 1
-    n.lastAttemptAt = datetime.now().isoformat()
-    n.lastError = error
-
-
-def mark_failed(n, error):
-    n.status = FAILED
-    n.attempts = 1
-    n.lastAttemptAt = datetime.now().isoformat()
-    n.lastError = error
-
-
-def mark_retry(n, attempts, error):
-    n.status = RETRY_PENDING
-    n.attempts = attempts
-    n.lastAttemptAt = datetime.now().isoformat()
-    n.lastError = error
-"""
