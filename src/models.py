@@ -18,3 +18,16 @@ class Notification:
         self.last_attempt_at = None
         self.last_error = None
         self.sms_segments = 0
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "target_channels": self.target_channels,
+            "message": self.message,
+            "status": self.status,
+            "created_at": self.created_at,
+            "attempts": self.attempts,
+            "last_attempt_at": self.last_attempt_at,
+            "last_error": self.last_error,
+            "sms_segments": self.sms_segments,
+        }
