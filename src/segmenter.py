@@ -1,0 +1,73 @@
+# SMS messages are limited to 160 characters per segment (GSM-7).
+MAX_SEGMENT_CHARS = 160
+
+from models import Notification, SENT, FAILED, RETRY_PENDING
+from datetime import datetime
+
+def min_sms_segments(message):
+    """Minimum number of SMS segments needed to deliver `message`
+    without splitting any word across segments. Used to report how
+    many billable SMS parts a notification will consume."""
+    if not message or not message.strip():
+        return 0
+    words = message.split()
+    if not words:
+        return 0
+    return _min_segments_from(words, 0)
+
+
+def _min_segments_from(words, start):
+    if start >= len(words):
+        return 0
+    best = None
+    current_len = 0
+    for end in range(start, len(words)):
+        add = len(words[end]) if current_len == 0 else len(words[end]) + 1
+        if current_len + add > MAX_SEGMENT_CHARS:
+            break
+        current_len += add
+        rest = _min_segments_from(words, end + 1)
+        candidate = rest + 1
+        if best is None or candidate < best:
+            best = candidate
+    return best if best is not None else 0
+
+def normalize_channels(target_channels):
+    seen = set()
+    unique = []
+
+    for c in target_channels:
+        key = (c.get("type"), c.get("value"))
+        if key not in seen:
+            seen.add(key)
+            unique.append(c)
+
+    return unique
+
+def has_sms(channels):
+    return any(c.get("type") == "sms" for c in channels)
+
+
+
+
+"""
+def mark_sent(n, error="[email] accepted for delivery"):
+    n.status = SENT
+    n.attempts = 1
+    n.lastAttemptAt = datetime.now().isoformat()
+    n.lastError = error
+
+
+def mark_failed(n, error):
+    n.status = FAILED
+    n.attempts = 1
+    n.lastAttemptAt = datetime.now().isoformat()
+    n.lastError = error
+
+
+def mark_retry(n, attempts, error):
+    n.status = RETRY_PENDING
+    n.attempts = attempts
+    n.lastAttemptAt = datetime.now().isoformat()
+    n.lastError = error
+"""
