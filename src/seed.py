@@ -1,6 +1,4 @@
 from repository import add_notification, reset_store
-from models import Notification, SENT, FAILED, RETRY_PENDING
-from datetime import datetime
 from processor import mark_sent, mark_failed, mark_retry
 
 def seed():

@@ -1,5 +1,4 @@
-from datetime import datetime
-from models import Notification, SENT, FAILED, RETRY_PENDING
+from models import Notification
 
 notifications = []
 next_id = 1

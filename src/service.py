@@ -1,6 +1,6 @@
 from segmenter import has_sms, min_sms_segments, normalize_channels
 from repository import add_notification, get_all, find_by_id
-from models import Notification, SENT, FAILED, RETRY_PENDING, PENDING
+from models import RETRY_PENDING, PENDING
 from processor import NotificationProcessor
 
 processor = NotificationProcessor()

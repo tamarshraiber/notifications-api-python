@@ -1,9 +1,6 @@
 # SMS messages are limited to 160 characters per segment (GSM-7).
 MAX_SEGMENT_CHARS = 160
 
-from models import Notification, SENT, FAILED, RETRY_PENDING
-from datetime import datetime
-
 def min_sms_segments(message):
     """Minimum number of SMS segments needed to deliver `message`
     without splitting any word across segments. Used to report how

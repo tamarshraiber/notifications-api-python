@@ -1,7 +1,6 @@
 from flask import Flask, request, jsonify
 from processor import NotificationProcessor
 from seed import seed
-from repository import add_notification, get_all, find_by_id
 from service import NotificationService
 import logging
 logging.basicConfig(level=logging.INFO)
