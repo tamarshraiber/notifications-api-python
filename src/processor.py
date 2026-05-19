@@ -37,12 +37,12 @@ class NotificationProcessor:
             print(channel_type, response)
         
             last_response_message = response.get("Message")
-            if not response.get("Success"):
+            if response.get("Result") != "Success":
                 all_success = False
 
         if all_success:
             n.status = SENT
-            n.last_error = last_response_message
+            n.last_error = None
         else:     
             n.status = FAILED
         
