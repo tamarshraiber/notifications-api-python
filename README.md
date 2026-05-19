@@ -98,6 +98,7 @@ Helper functions that were separated into separate files:
 `seed` – generates initial data  
 `segmenter` – helper functions for calculations (dedup, SMS segments, tests, etc.)
 
+---
 
 ### Validation and correctness:
 I added input checks to make sure that valid inputs are entered and not empty inputs:
@@ -107,14 +108,18 @@ type/value check
 allowed types check
 Update status by sending
 
+---
 
 ### Exception management:
 Separation between common error types: ValueError, not found, Exception
 to send clear messages to the user about the exception, to prevent that the server will crash and to separate types of exceptions
 
+---
 
 ### Tools used:
 GitHubCopilot, ChatGPT, Gemini, Poastman
+
+---
 
 I not only improved the structure of the system but also its entire flow of sending messages, including validation, sending, error handling and status management.
 
